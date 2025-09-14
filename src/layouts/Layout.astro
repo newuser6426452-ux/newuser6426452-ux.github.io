@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+		<title>Αμίρ</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--cream: #F7F3E9;
+		--warm-brown: #8B4513;
+		--light-brown: #D2B48C;
+		--darker-brown: #654321;
+		--soft-gray: #6B5B73;
+		--text-dark: #2C2416;
+		--text-light: #5A4A3A;
+		--accent: #CD853F;
+	}
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+		background: var(--cream);
+		font-family: 'Inter', sans-serif;
+		color: var(--text-dark);
+		line-height: 1.6;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Playfair Display', serif;
+		font-weight: 500;
+		line-height: 1.3;
+	}
+
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 2rem;
+	}
+
+	@media (max-width: 768px) {
+		.container {
+			padding: 0 1rem;
+		}
+	}
+</style>

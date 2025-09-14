@@ -1,0 +1,339 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+---
+
+<Layout>
+	<Navigation currentPath="/designs" />
+	<main class="designs-main">
+		<div class="container">
+			<section class="hero">
+				<h1>My Designs</h1>
+				<p>A collection of my creative work</p>
+			</section>
+			
+			<section class="designs-grid">
+				<img src="public/pulp fiction.jpg" alt="Design Image" />
+				<img src="public/somethin' stupid.jpg" alt="Design Image" />
+				<img src="public/always down.jpg" alt="Design Image" />
+				<img src="public/telka qadeya.jpg" alt="Design Image" />
+				<img src="public/white dress.jpg" alt="Design Image" />
+				<img src="public/true detective.jpg" alt="Design Image" />
+				<img src="public/The Bear - final.jpg" alt="Design Image" />
+			</section>
+		</div>
+	</main>
+
+	<!-- Fullscreen Modal -->
+	<div id="modal" class="modal">
+		<div class="modal-content">
+			<span class="close">&times;</span>
+			<div class="image-container">
+				<img id="modal-image" src="" alt="Design in fullscreen" />
+			</div>
+			<div class="zoom-controls">
+				<button id="zoom-in">+</button>
+				<button id="zoom-out">-</button>
+				<button id="reset-zoom">Reset</button>
+			</div>
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.designs-main {
+		min-height: 100vh;
+		padding: 2rem 0;
+	}
+
+	.hero {
+		text-align: center;
+		margin-bottom: 3rem;
+		padding: 2rem 0;
+	}
+
+	.hero h1 {
+		font-size: 3rem;
+		color: var(--warm-brown);
+		margin-bottom: 1rem;
+		font-weight: 700;
+	}
+
+	.hero p {
+		font-size: 1.2rem;
+		color: var(--text-light);
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.designs-grid {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+		margin-bottom: 3rem;
+		width: 100%;
+	}
+
+	.designs-grid img {
+		max-width: 400px;
+		width: 100%;
+		height: auto;
+		display: block;
+		border-radius: 12px;
+		box-shadow: 0 8px 25px rgba(139, 69, 19, 0.1);
+		transition: transform 0.3s ease;
+		cursor: pointer;
+		margin-bottom: 1.5rem;
+	}
+
+	.designs-grid img:hover {
+		transform: translateY(-3px) scale(1.02);
+		box-shadow: 0 15px 40px rgba(139, 69, 19, 0.15);
+	}
+
+	@media (max-width: 768px) {
+		.hero h1 {
+			font-size: 2.2rem;
+		}
+
+		.hero p {
+			font-size: 1rem;
+		}
+
+		.designs-grid img {
+			max-width: 90%;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.designs-grid img {
+			max-width: 95%;
+		}
+	}
+
+	/* Modal Styles */
+	.modal {
+		display: none;
+		position: fixed;
+		z-index: 1000;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.9);
+		backdrop-filter: blur(5px);
+	}
+
+	.modal-content {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	.close {
+		position: absolute;
+		top: 20px;
+		right: 35px;
+		color: white;
+		font-size: 40px;
+		font-weight: bold;
+		cursor: pointer;
+		z-index: 1001;
+		transition: color 0.3s ease;
+	}
+
+	.close:hover {
+		color: var(--light-brown);
+	}
+
+	.image-container {
+		max-width: 90%;
+		max-height: 80%;
+		overflow: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: grab;
+	}
+
+	.image-container:active {
+		cursor: grabbing;
+	}
+
+	#modal-image {
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+		transition: transform 0.3s ease;
+		user-select: none;
+	}
+
+	.zoom-controls {
+		position: absolute;
+		bottom: 30px;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 10px;
+		z-index: 1001;
+	}
+
+	.zoom-controls button {
+		background: rgba(139, 69, 19, 0.8);
+		color: white;
+		border: none;
+		padding: 10px 15px;
+		border-radius: 25px;
+		cursor: pointer;
+		font-size: 16px;
+		font-weight: bold;
+		transition: all 0.3s ease;
+		backdrop-filter: blur(10px);
+	}
+
+	.zoom-controls button:hover {
+		background: var(--warm-brown);
+		transform: translateY(-2px);
+	}
+
+	@media (max-width: 768px) {
+		.close {
+			top: 10px;
+			right: 20px;
+			font-size: 30px;
+		}
+
+		.zoom-controls {
+			bottom: 20px;
+		}
+
+		.zoom-controls button {
+			padding: 8px 12px;
+			font-size: 14px;
+		}
+	}
+</style>
+
+<script>
+	// Modal functionality
+	const modal = document.getElementById('modal');
+	const modalImage = document.getElementById('modal-image');
+	const closeBtn = document.querySelector('.close');
+	const imageContainer = document.querySelector('.image-container');
+	
+	// Zoom controls
+	const zoomInBtn = document.getElementById('zoom-in');
+	const zoomOutBtn = document.getElementById('zoom-out');
+	const resetZoomBtn = document.getElementById('reset-zoom');
+	
+	let currentZoom = 1;
+	let isDragging = false;
+	let startX, startY, scrollLeft, scrollTop;
+
+	// Add click listeners to all design images
+	document.addEventListener('DOMContentLoaded', function() {
+		const designImages = document.querySelectorAll('.designs-grid img');
+		
+		designImages.forEach(img => {
+			img.addEventListener('click', function() {
+				modal.style.display = 'block';
+				modalImage.src = this.src;
+				modalImage.alt = this.alt;
+				currentZoom = 1;
+				modalImage.style.transform = `scale(${currentZoom})`;
+				document.body.style.overflow = 'hidden';
+			});
+		});
+	});
+
+	// Close modal
+	closeBtn.addEventListener('click', closeModal);
+	modal.addEventListener('click', function(e) {
+		if (e.target === modal) {
+			closeModal();
+		}
+	});
+
+	// Close with Escape key
+	document.addEventListener('keydown', function(e) {
+		if (e.key === 'Escape' && modal.style.display === 'block') {
+			closeModal();
+		}
+	});
+
+	function closeModal() {
+		modal.style.display = 'none';
+		document.body.style.overflow = 'auto';
+		currentZoom = 1;
+		modalImage.style.transform = `scale(${currentZoom})`;
+		imageContainer.scrollLeft = 0;
+		imageContainer.scrollTop = 0;
+	}
+
+	// Zoom functionality
+	zoomInBtn.addEventListener('click', function() {
+		currentZoom = Math.min(currentZoom + 0.5, 5);
+		modalImage.style.transform = `scale(${currentZoom})`;
+	});
+
+	zoomOutBtn.addEventListener('click', function() {
+		currentZoom = Math.max(currentZoom - 0.5, 0.5);
+		modalImage.style.transform = `scale(${currentZoom})`;
+	});
+
+	resetZoomBtn.addEventListener('click', function() {
+		currentZoom = 1;
+		modalImage.style.transform = `scale(${currentZoom})`;
+		imageContainer.scrollLeft = 0;
+		imageContainer.scrollTop = 0;
+	});
+
+	// Mouse wheel zoom
+	imageContainer.addEventListener('wheel', function(e) {
+		e.preventDefault();
+		const zoomSpeed = 0.1;
+		
+		if (e.deltaY < 0) {
+			currentZoom = Math.min(currentZoom + zoomSpeed, 5);
+		} else {
+			currentZoom = Math.max(currentZoom - zoomSpeed, 0.5);
+		}
+		
+		modalImage.style.transform = `scale(${currentZoom})`;
+	});
+
+	// Drag to pan when zoomed
+	imageContainer.addEventListener('mousedown', function(e) {
+		if (currentZoom > 1) {
+			isDragging = true;
+			startX = e.pageX - imageContainer.offsetLeft;
+			startY = e.pageY - imageContainer.offsetTop;
+			scrollLeft = imageContainer.scrollLeft;
+			scrollTop = imageContainer.scrollTop;
+		}
+	});
+
+	imageContainer.addEventListener('mouseleave', function() {
+		isDragging = false;
+	});
+
+	imageContainer.addEventListener('mouseup', function() {
+		isDragging = false;
+	});
+
+	imageContainer.addEventListener('mousemove', function(e) {
+		if (!isDragging || currentZoom <= 1) return;
+		e.preventDefault();
+		const x = e.pageX - imageContainer.offsetLeft;
+		const y = e.pageY - imageContainer.offsetTop;
+		const walkX = (x - startX) * 2;
+		const walkY = (y - startY) * 2;
+		imageContainer.scrollLeft = scrollLeft - walkX;
+		imageContainer.scrollTop = scrollTop - walkY;
+	});
+</script>
